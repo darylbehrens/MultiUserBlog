@@ -1,0 +1,28 @@
+######################################################
+# Multi User Blog									 
+# Written By: Daryl Behrens - darylbehrens@gmail.com 
+# Languages: Python 2.7, Jinja						 
+# Dependencies: Google App Engine, Google Data Store 
+######################################################
+
+Installation:
+--------------------------
+Linux:
+ 1. Clone repo to a directory
+ 2. Make Sure To Have Google App Store SDK installed
+ 3. Get project ID from Google App Store
+ 4. run the following from the root of the repo:
+ 	'appcfg.py -A [YOUR_PROJECT_ID] -V v1 update ./'
+ 5. Enjoy your Blog
+
+ Description
+ -------------------------
+ This is a very basic multi user blog with the following features
+  1. Signup - creates user hashing password
+  2. Login
+  3. Add Posts
+  4. Edit Posts
+  5. Delete Posts
+  6. View Others Blogs
+  7. Vote On Others Posts
+  8. Comment On Posts
