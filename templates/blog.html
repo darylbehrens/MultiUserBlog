@@ -1,0 +1,88 @@
+{% extends "base.html"%}
+
+{% block content %}
+
+<form method="post">	
+	{% for post in posts %}
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2">
+				<div class="row clickable" onclick="redirectOnClick({{post.key().id()}});">
+					<div class="col-xs-6 subject">
+						{{ post.subject }}
+					</div>
+					<div class="col-xs-5 datefield">
+						<div >{{ post.created.strftime("%B %d, %Y")}}</div>
+					</div>
+					<div class="col-xs-1 score">
+						{{post.score}}
+					</div>
+				</div>
+				<div class="row">
+					<hr>
+				</div>	
+				<div class="row">
+					<div class="col-xs-12 content">
+						{{ post.content|safe}}
+					</div>
+				</div>
+				<div class="row">
+					<div class="error">{{errormessage}}</div>
+				</div>
+				{% if is_edit == True %}
+						{% if is_owner == True %}
+						<div class="row">
+							<button class="button" type="button" onclick="deletePost({{post.key().id()}})">Delete Post</button>
+							<button class="button" type="button" onclick="editPost({{post.key().id()}})">Edit Post</button>
+							<button class="button" type="button" onclick="toggleCommentsVisibility()">Add Comments</button>
+						</div>
+					 	{% else %} 
+					 	<div class="row">
+					 		<div class="col-xs-6">
+					 			<button class="button" type="button" onclick="toggleCommentsVisibility()">Add Comments</button>
+					 		</div>
+					 		<div class="col-xs-6 thumb">
+						 			<a href="/blog/thumbsdown/{{post.key().id()}}" style="font-weight: {{downvote}};">&#x1F44E</a>	
+						 			<a href="/blog/thumbsup/{{post.key().id()}}" style="font-weight: {{upvote}};">&#x1F44d</a>
+					 			</div>
+					 	</div>
+					 	
+					 	{% endif %}
+					 <!-- Comment Section -->
+					 <div class="addcommentarea" id="addcommentsection">
+						<div class="row">
+							<div>
+							<h3>Add Comment</h3>
+							</div>
+						</div>
+						<div class="row">
+							<textarea name="comment" class="col-xs-10 addcomment" value={{comment}}></textarea>
+						</div>
+						<div class="row">
+							<input type="submit" value="Save Comment"/>
+						</div>
+					</div>
+					<div class="row">
+						<h3 >Comments</h3>
+					</div>
+					<div class="row">
+						<hr/>
+					</div>
+					{% for comment in comments %}
+						<div class="row">
+							<div class="col-xs-12 commentheader">{{comment.owner}} - {{comment.created.strftime("%B %d, %Y")}}</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-10 comment">
+								{{comment.text}}
+							</div>
+						</div>
+						<hr class="col-xs-10"/>
+					{% endfor %}
+				{% endif %}
+
+
+			</div>
+		</div>
+	{% endfor %}
+</form>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html"%}
+
+{% block content %}
+	<form method="post">
+		<div class="row"><h4>{{form_type}}</h4></div>
+		<div class="row">Subject</div>
+		<input class="row" name="subject" value="{{subject}}">
+		<div class="row">Post</div>
+		<div class="row">
+			<textarea class="col-xs-9 newcontent" name="content">{{content}}</textarea>
+		</div>
+		<input type="hidden" name="post_id" value="{{post_id}}"/>
+		<div class="row error">{{error_message}}</div>
+		<input type="submit" class="row button">
+	</form>
+{% endblock %}

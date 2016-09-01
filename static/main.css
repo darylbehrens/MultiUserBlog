@@ -1,0 +1,103 @@
+hr{
+	color: black;
+	border: 1px solid #999;
+	margin-top: 0px;
+	margin-bottom: 2px;
+}
+
+td{
+	padding: 4px;
+}
+
+body{
+	background: #FDF5E6;
+}
+
+.label{
+	color:black;
+	vertical-align: middle;
+}
+
+.nav-logininfo{
+	float:right;
+}
+.clickable:hover{
+	background: lightblue;
+}
+
+.datefield{
+	text-align: right;
+	color: #aaa;
+	margin-top: 10px;
+	margin-right:0px;
+	padding-right: 0px;
+}
+
+.subject{
+	font-weight: bold;
+	font-size: 25px;
+	padding-left: 0px;
+}
+
+.commenttextarea{
+	height: 200px;
+}
+
+.comment{
+	margin-bottom: 10px;
+	margin-left:5px;
+}
+
+.commentheader{
+	padding: 2px;
+	margin-bottom: 3px;
+}
+
+.content{
+	margin-bottom: 20px;
+	font-size: 15px;
+}
+
+.newcontent{
+	height: 200px;
+	padding: 0px;
+}
+
+.header{
+	text-align: center;
+}
+
+.error{
+	color: red;
+}
+
+.button{
+	margin-bottom: 5px;
+	margin-top: 5px;
+	min-width: 100px;
+}
+
+.addcomment{
+	margin-bottom: 10px;
+}
+
+.addcommentarea{
+	display: none;
+}
+
+.thumb{
+	font-size: 30px;
+	padding: 0px;
+	margin: 0px;
+	text-align: right;
+	
+}
+
+.score{
+	font-size: 18px;
+ 	text-align: right;
+	color: #aaa;
+	margin-top: 8px;
+	margin-right:0px;
+	padding-right: 0px;
+}
