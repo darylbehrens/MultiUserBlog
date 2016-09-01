@@ -13,7 +13,7 @@ Linux:
  3. Get project ID from Google App Store
  4. run the following from the root of the repo:
  	'appcfg.py -A [YOUR_PROJECT_ID] -V v1 update ./'
- 5. Enjoy your Blog
+ 5. Go To 'your URL'/signup to start
 
  Description
  -------------------------

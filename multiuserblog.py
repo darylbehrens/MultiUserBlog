@@ -230,7 +230,7 @@ class Blog(db.Model):
     score = db.IntegerProperty(default=0)
 
 # List of blogs
-class MainBlogPage(Handler
+class MainBlogPage(Handler):
     def render_index(self):
         valid_user = self.verify_user()
         user_id = ""
