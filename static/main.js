@@ -30,3 +30,24 @@ function toggleCommentsVisibility(){
 		$('#addcommentsection').hide();
 	}
 }
+
+function turnDivToTextArea(commentId){
+	// Make Save Link visible
+	$('#save' + commentId).show();
+
+	// Save Text Data
+	var divHtml = $("#" + commentId).html().trim();
+	console.log(divHtml);
+
+	// Create Dynamic Text area
+	var editableText = $("<textarea class=\"col-xs-12 comment\" name=\"mycomment\" value={{newcomment}}/>");
+
+	// Fill Text area
+	editableText.val(divHtml);
+
+	// Replace Div with Text Area
+	$("#" + commentId).replaceWith(editableText);
+
+	// Focus
+	editableText.focus();
+}

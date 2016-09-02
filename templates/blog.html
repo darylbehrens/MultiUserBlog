@@ -2,52 +2,53 @@
 
 {% block content %}
 
-<form method="post">	
+
 	{% for post in posts %}
-		<div class="row">
-			<div class="col-xs-8 col-xs-offset-2">
-				<div class="row clickable" onclick="redirectOnClick({{post.key().id()}});">
-					<div class="col-xs-6 subject">
-						{{ post.subject }}
-					</div>
-					<div class="col-xs-5 datefield">
-						<div >{{ post.created.strftime("%B %d, %Y")}}</div>
-					</div>
-					<div class="col-xs-1 score">
-						{{post.score}}
-					</div>
+		
+	<div class="row">
+		<div class="col-xs-8 col-xs-offset-2">
+			<div class="row clickable" onclick="redirectOnClick({{post.key().id()}});">
+				<div class="col-xs-6 subject">
+					{{ post.subject }}
 				</div>
-				<div class="row">
-					<hr>
-				</div>	
-				<div class="row">
-					<div class="col-xs-12 content">
-						{{ post.content|safe}}
+				<div class="col-xs-5 datefield">
+					<div >{{ post.created.strftime("%B %d, %Y")}}</div>
+				</div>
+				<div class="col-xs-1 score">
+					{{post.score}}
+				</div>
+			</div>
+			<div class="row">
+				<hr>
+			</div>	
+			<div class="row">
+				<div class="col-xs-12 content">
+					{{ post.content|safe}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="error">{{errormessage}}</div>
+			</div>
+			{% if is_edit == True %}
+				{% if is_owner == True %}
+					<div class="row">
+						<button class="button" type="button" onclick="deletePost({{post.key().id()}})">Delete Post</button>
+						<button class="button" type="button" onclick="editPost({{post.key().id()}})">Edit Post</button>
+						<button class="button" type="button" onclick="toggleCommentsVisibility()">Add Comments</button>
 					</div>
-				</div>
-				<div class="row">
-					<div class="error">{{errormessage}}</div>
-				</div>
-				{% if is_edit == True %}
-						{% if is_owner == True %}
-						<div class="row">
-							<button class="button" type="button" onclick="deletePost({{post.key().id()}})">Delete Post</button>
-							<button class="button" type="button" onclick="editPost({{post.key().id()}})">Edit Post</button>
-							<button class="button" type="button" onclick="toggleCommentsVisibility()">Add Comments</button>
-						</div>
-					 	{% else %} 
-					 	<div class="row">
-					 		<div class="col-xs-6">
-					 			<button class="button" type="button" onclick="toggleCommentsVisibility()">Add Comments</button>
-					 		</div>
-					 		<div class="col-xs-6 thumb">
-						 			<a href="/blog/thumbsdown/{{post.key().id()}}" style="font-weight: {{downvote}};">&#x1F44E</a>	
-						 			<a href="/blog/thumbsup/{{post.key().id()}}" style="font-weight: {{upvote}};">&#x1F44d</a>
-					 			</div>
-					 	</div>
-					 	
-					 	{% endif %}
-					 <!-- Comment Section -->
+				 	{% else %} 
+				 	<div class="row">
+				 		<div class="col-xs-6">
+				 			<button class="button" type="button" onclick="toggleCommentsVisibility()">Add Comments</button>
+				 		</div>
+				 		<div class="col-xs-6 thumb">
+					 			<a href="/blog/thumbsdown/{{post.key().id()}}" style="font-weight: {{downvote}};">&#x1F44E</a>	
+					 			<a href="/blog/thumbsup/{{post.key().id()}}" style="font-weight: {{upvote}};">&#x1F44d</a>
+				 			</div>
+				 	</div>
+				{% endif %}
+				<form method="post">
+				 <!-- Comment Section -->
 					 <div class="addcommentarea" id="addcommentsection">
 						<div class="row">
 							<div>
@@ -61,28 +62,44 @@
 							<input type="submit" value="Save Comment"/>
 						</div>
 					</div>
+				</form>
+				<div class="row">
+					<h3 >Comments</h3>
+				</div>
+				<div class="row">
+					<hr/>
+				</div>
+				{% for comment in comments %}
 					<div class="row">
-						<h3 >Comments</h3>
+						<div class="col-xs-8 commentheader">{{comment.owner}} - {{comment.created.strftime("%B %d, %Y")}}</div>
+						{% if comment.owner == login_name %}
+							<div class="col-xs-2 commentactions">
+								<a href="/blog/deletecomment/{{comment.key().id()}}?post_id={{post.key().id()}}">Delete</a>
+							</div>
+							<div class="col-xs-2 commentactions" onclick="turnDivToTextArea({{comment.key().id()}})">
+								<a>Edit</a>
+							</div>
+						{% endif %}
 					</div>
-					<div class="row">
-						<hr/>
-					</div>
-					{% for comment in comments %}
+					<form method="post" action="/blog/editcomment/{{comment.key().id()}}">
 						<div class="row">
-							<div class="col-xs-12 commentheader">{{comment.owner}} - {{comment.created.strftime("%B %d, %Y")}}</div>
-						</div>
-						<div class="row">
-							<div class="col-xs-10 comment">
+							<div class="col-xs-11 comment" id="{{comment.key().id()}}">
 								{{comment.text}}
 							</div>
 						</div>
-						<hr class="col-xs-10"/>
-					{% endfor %}
-				{% endif %}
-
-
-			</div>
+						<div class="row">
+							<input type="hidden" name="postid" value="{{post.key().id()}}"/>
+							<div class="col-xs-12 savebutton" id="save{{comment.key().id()}}">
+								<input type=submit value="Save"/>
+							</div>
+						</div>
+						<div class="row">
+							<hr/>
+						</div>	
+					</form>
+				{% endfor %}
+			{% endif %}
 		</div>
+	</div>
 	{% endfor %}
-</form>
 {% endblock %}

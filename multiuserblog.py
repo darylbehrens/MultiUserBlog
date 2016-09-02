@@ -242,10 +242,16 @@ class MainBlogPage(Handler):
                 user_id = User.get_id_by_name(user)
             else:
                 user_id = valid_user
+            print user_id
             posts = db.GqlQuery(
-                ("SELECT * FROM Blog WHERE "
-                 "owner = %s ORDER BY created DESC") % user_id)
-            self.render("blog.html", posts=posts,
+                "SELECT * FROM Blog WHERE owner = %s" % user_id)
+
+            # sort by date, since I was getting an index error
+            display_posts = []
+            for post in posts:
+                display_posts.append(post)
+            display_posts.sort(key=lambda x: x.created, reverse=True)
+            self.render("blog.html", posts=display_posts,
                         login_name=User.get_name_by_id(int(valid_user)))
         else:
             self.redirect('/signup')
@@ -362,6 +368,10 @@ class PostPage(Handler):
 
             # get comments
             comments = Comment.all().filter("post_id =", int(postId))
+            display_comments = []
+            for comment in comments:
+                display_comments.append(comment)
+            display_comments.sort(key=lambda x: x.created, reverse = True)
             login_name = User.get_name_by_id(int(valid_user))
             self.render("blog.html", posts=[post],
                         login_name=login_name,
@@ -371,6 +381,7 @@ class PostPage(Handler):
         else:
             self.redirect('/signup')
 
+    # save Comment
     def post(self, post_id):
         valid_user = self.verify_user()
         if valid_user:
@@ -413,6 +424,7 @@ class DeletePage(Handler):
                 # Make Sure only owner can delete post
                 if (str(valid_user) == str(blog.owner)):
                     blog.delete()
+                    self.redirect("/blog/%s" % postId)
                 else:
                     self.redirect(
                         ("/blog/%s?errormessage=You can "
@@ -495,6 +507,50 @@ class ScoreDownPage(Handler):
         else:
             self.redirect('/signup')
 
+# Deletes Comment if owned by current user
+class DeleteCommentPage(Handler):
+
+    def get(self, comment_id):
+        post_id = self.request.get("post_id")
+        valid_user = self.verify_user()
+        if valid_user:
+            comment = Comment.get_by_id(int(comment_id))
+            if comment:
+                # Make Sure only owner can delete post
+                if (str(User.get_name_by_id(int(valid_user))) == str(comment.owner)):
+                    comment.delete()
+                    self.redirect("/blog/%d" % int(post_id))
+                else:
+                    self.redirect(
+                        ("/blog/%s?errormessage=You can "
+                         "not delete another users Comment") % post_id)
+            else:
+                self.redirect('/blog/welcome')
+        else:
+            self.redirect('/signup')
+
+class EditCommentPage(Handler):
+    def post(self, commentId):
+        valid_user = self.verify_user()
+        if valid_user:
+            comment = Comment.get_by_id(int(commentId))
+            if comment:
+                # Make Sure only owner can delete post
+                if (str(User.get_name_by_id(int(valid_user))) == str(comment.owner)):
+                    post_id = self.request.get("postid")
+                    comment_text = self.request.get("mycomment")
+                    comment.text = comment_text
+                    comment.put()
+                    self.redirect("/blog/%d" % int(post_id))
+                else:
+                    self.redirect(
+                        ("/blog/%s?errormessage=You can "
+                         "not edit another users Comment") % post_id)
+            else:
+                self.redirect('/blog/welcome')
+        else:
+            self.redirect('/signup')
+
 # Comments Entity
 class Comment(db.Model):
     post_id = db.IntegerProperty(required=True)
@@ -509,6 +565,7 @@ class Votes(db.Model):
     votetype = db.IntegerProperty(default=0)
 
 app = webapp2.WSGIApplication([
+    ('/', LoginPage),
     ('/signup', SignupPage), ('/blog/welcome', WelcomPage),
     ('/login', LoginPage), ('/logoff', LogoffPage),
     ('/blog', MainBlogPage), ('/blog/newpost', NewPost),
@@ -516,4 +573,7 @@ app = webapp2.WSGIApplication([
     ('/blog/delete/([0-9]+)', DeletePage),
     ('/blog/edit/([0-9]+)', EditPage),
     ('/blog/thumbsup/([0-9]+)', ScoreUpPage),
-    ('/blog/thumbsdown/([0-9]+)', ScoreDownPage)], debug=True)
+    ('/blog/thumbsdown/([0-9]+)', ScoreDownPage),
+    ('/blog/deletecomment/([0-9]+)', DeleteCommentPage),
+    ('/blog/editcomment/([0-9]+)', EditCommentPage)
+    ], debug=True)
