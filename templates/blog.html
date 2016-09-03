@@ -32,19 +32,26 @@
 			{% if is_edit == True %}
 				{% if is_owner == True %}
 					<div class="row">
-						<button class="button" type="button" onclick="deletePost({{post.key().id()}})">Delete Post</button>
-						<button class="button" type="button" onclick="editPost({{post.key().id()}})">Edit Post</button>
-						<button class="button" type="button" onclick="toggleCommentsVisibility()">Add Comments</button>
+						<form method="post" action="/blog/delete/{{post.key().id()}}">
+							<input class="button" type="submit" value="Delete Post"/>
+							<button class="button" type="button" onclick="editPost({{post.key().id()}})">Edit Post</button>
+							<button class="button" type="button" onclick="toggleCommentsVisibility()">Add Comments</button>
+						</form>
 					</div>
 				 	{% else %} 
 				 	<div class="row">
 				 		<div class="col-xs-6">
 				 			<button class="button" type="button" onclick="toggleCommentsVisibility()">Add Comments</button>
 				 		</div>
+
 				 		<div class="col-xs-6 thumb">
-					 			<a href="/blog/thumbsdown/{{post.key().id()}}" style="font-weight: {{downvote}};">&#x1F44E</a>	
-					 			<a href="/blog/thumbsup/{{post.key().id()}}" style="font-weight: {{upvote}};">&#x1F44d</a>
-				 			</div>
+				 			<form method="post" class="sideform" action="/blog/thumbsdown/{{post.key().id()}}" id="downvote">
+					 			<a onclick="submitForm('downvote');" style="font-weight: {{downvote}};">&#x1F44E</a>	
+					 		</form>
+					 		<form method="post" class="sideform" action="/blog/thumbsup/{{post.key().id()}}" id="upvote">
+					 			<a onclick="submitForm('upvote');" style="font-weight: {{upvote}};">&#x1F44d</a>
+					 		</form>
+				 		</div>
 				 	</div>
 				{% endif %}
 				<form method="post">
@@ -73,9 +80,13 @@
 					<div class="row">
 						<div class="col-xs-8 commentheader">{{comment.owner}} - {{comment.created.strftime("%B %d, %Y")}}</div>
 						{% if comment.owner == login_name %}
-							<div class="col-xs-2 commentactions">
-								<a href="/blog/deletecomment/{{comment.key().id()}}?post_id={{post.key().id()}}">Delete</a>
-							</div>
+							<form action="/blog/deletecomment" method="post" id="deletecomment">
+								<div class="col-xs-2 commentactions">
+									<input type="hidden" name="post_id" value="{{post.key().id()}}"/>
+									<input type="hidden" name="comment_id" value="{{comment.key().id()}}"/>
+									<a onclick="submitForm('deletecomment');">Delete</a>
+								</div>
+							</form>
 							<div class="col-xs-2 commentactions" onclick="turnDivToTextArea({{comment.key().id()}})">
 								<a>Edit</a>
 							</div>

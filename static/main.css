@@ -110,3 +110,7 @@ body{
 .savebutton{
 	display: none;
 }
+
+.sideform{
+	display: inline-block;
+}

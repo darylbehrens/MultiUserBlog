@@ -1,7 +1,7 @@
 {% extends "base.html"%}
 
 {% block content %}
-	<form method="post">
+	<form method="post" action="{{action}}">
 		<div class="row"><h4>{{form_type}}</h4></div>
 		<div class="row">Subject</div>
 		<input class="row" name="subject" value="{{subject}}">

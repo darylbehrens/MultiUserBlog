@@ -51,3 +51,9 @@ function turnDivToTextArea(commentId){
 	// Focus
 	editableText.focus();
 }
+
+function submitForm(formId){
+	console.log(formId);
+	var form = document.getElementById(formId).submit();
+
+}

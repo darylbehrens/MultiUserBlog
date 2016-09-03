@@ -22,7 +22,7 @@
 			</div>
 
 			<div class="collapse navbar-collapse" id="nav-bar-data">				
-					{% if login_name %}
+					{% if login_name and login_name != "guest"%}
 						<ul class="nav navbar-nav">
 							<li><p class="navbar-text"><a href="/blog/welcome">Home</a></p></li>
 							<li><p class="navbar-text"><a href="/blog">My Blog</a></p></li>
@@ -37,6 +37,9 @@
 							<button type="button" class="btn btn-default navbar-btn" onclick="logoff()">Logoff</button>
 						</div>
 					{% else %}
+						<ul class="nav navbar-nav">
+							<li><p class="navbar-text"><a href="/users">Explore</a></p></li>
+						</ul>
 						<div class="nav-logininfo">
 							<button type="button" class="btn btn-default navbar-btn" onclick="signup()">Signup</button>						
 							<button type="button" class="btn btn-default navbar-btn" onclick="login()">Login</button>
