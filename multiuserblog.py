@@ -80,6 +80,7 @@ class NewPost(Handler):
         if valid_user:
             subject = self.request.get("subject")
             content = self.request.get("content")
+            post_id = self.request.get("post_id")
             
             if subject and content:
                 post = Blog(subject=subject, content=content,

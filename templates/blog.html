@@ -45,7 +45,7 @@
 							<button class="button" type="button" onclick="toggleCommentsVisibility()">Add Comments</button>
 						</form>
 					</div>
-				 	{% else %} 
+				 	{% elif login_name != "guest" %} 
 				 	<div class="row">
 				 		<div class="col-xs-6">
 				 			<button class="button" type="button" onclick="toggleCommentsVisibility()">Add Comments</button>

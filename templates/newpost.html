@@ -11,6 +11,9 @@
 		</div>
 		<input type="hidden" name="post_id" value="{{post_id}}"/>
 		<div class="row error">{{error_message}}</div>
-		<input type="submit" class="row button">
+		<div class="row">
+			<input type="submit" class="button">
+			<button class="button" type="button" onclick="window.location = '/blog/welcome'">Cancel</button>
+		</div>
 	</form>
 {% endblock %}
