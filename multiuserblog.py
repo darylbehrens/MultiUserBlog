@@ -47,6 +47,7 @@ class MainBlogPage(Handler):
             display_posts = []
             for post in posts:
                 display_posts.append(post)
+            print len(display_posts)
             display_posts.sort(key=lambda x: x.created, reverse=True)
             self.render("blog.html", posts=display_posts,
                             login_name=login_name)

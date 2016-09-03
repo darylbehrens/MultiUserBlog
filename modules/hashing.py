@@ -1,5 +1,6 @@
 import hmac
 import random
+import string
 
 # Cookie Hashing
 SECRET = "isdfadf"

@@ -2,6 +2,7 @@ import hashing
 from handler import *
 from models import *
 import re
+import string
 
 class SignupPage(Handler):
 
